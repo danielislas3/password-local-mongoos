@@ -11,7 +11,7 @@ const path = require('path');
 const passport = require('./middlewares/passport')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
-
+const checkRole= require('./middlewares/checkRole')
 mongoose
   .connect('mongodb://localhost/plm', {
     useNewUrlParser: true
@@ -75,7 +75,6 @@ app.locals.title = 'Express - Generated with IronGenerator';
 
 const index = require('./routes/index');
 app.use('/', index);
-
 app.use('/auth', require('./routes/authRoues'))
-
+app.use('/admin',checkRole('ADMIN'),require('./routes/adminRoutes'))
 module.exports = app;
